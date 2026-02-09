@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Transaction Timeline - ATM EJ Parser{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 py-10">
+    <h2 class="text-2xl font-semibold title-font tracking-tight text-white mb-8">Transaction Timeline</h2>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+        <div class="max-w-3xl mx-auto">
+            <div class="relative pl-8 border-l-2 border-zinc-700 space-y-12">
+                <div>
+                    <div class="absolute -left-[9px] w-4 h-4 rounded-full bg-blue-500"></div>
+                    <div class="text-xs text-zinc-500">14:32:15</div>
+                    <div class="font-medium text-white mt-1">Card Inserted</div>
+                    <div class="text-zinc-500 text-sm">Card Number: **** **** **** 4832</div>
+                </div>
+                <div>
+                    <div class="absolute -left-[9px] w-4 h-4 rounded-full bg-blue-500"></div>
+                    <div class="text-xs text-zinc-500">14:32:18</div>
+                    <div class="font-medium text-white mt-1">PIN Entered</div>
+                    <div class="text-zinc-500 text-sm">Authentication successful</div>
+                </div>
+                <div>
+                    <div class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500"></div>
+                    <div class="text-xs text-zinc-500">14:32:22</div>
+                    <div class="font-medium text-white mt-1">Withdrawal Requested</div>
+                    <div class="text-white">₹10,000</div>
+                </div>
+                <div>
+                    <div class="absolute -left-[9px] w-4 h-4 rounded-full bg-emerald-500"></div>
+                    <div class="text-xs text-zinc-500">14:32:28</div>
+                    <div class="font-medium text-white mt-1">Cash Dispensed</div>
+                    <div class="text-emerald-400">₹10,000 (1000×10)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

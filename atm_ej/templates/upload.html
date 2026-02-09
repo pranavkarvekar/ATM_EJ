@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload EJ File{% endblock %}
+
+{% block navigation %}
+<div class="flex bg-zinc-900 rounded-full p-1 opacity-40">
+    <span class="px-6 py-2 text-sm">Dashboard</span>
+    <span class="px-6 py-2 text-sm">Table</span>
+    <span class="px-6 py-2 text-sm">Errors</span>
+    <span class="px-6 py-2 text-sm">Reconciliation</span>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-72px)] flex items-center justify-center px-6">
+    <div class="max-w-lg w-full bg-zinc-900 border border-zinc-800 rounded-3xl p-10">
+
+        <h1 class="title-font text-2xl font-semibold text-white mb-2">
+            Upload EJ File
+        </h1>
+        <p class="text-zinc-400 mb-8">
+            Parse ATM Electronic Journal logs
+        </p>
+
+        <form method="post" action="{% url 'upload_ej' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="file" name="ej_file"
+                   class="block w-full text-sm text-zinc-400
+                          file:bg-zinc-800 file:border-0
+                          file:px-4 file:py-2 file:rounded-lg
+                          file:text-zinc-300 file:cursor-pointer"
+                   accept=".txt,.log,.csv"
+                   required>
+
+            <button type="submit"
+                    class="mt-6 w-full bg-white text-zinc-950 font-semibold py-3 rounded-xl hover:bg-zinc-100">
+                Upload & Parse EJ
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

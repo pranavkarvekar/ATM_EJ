@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ATM EJ Parser{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ✅ Correct Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .title-font { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="bg-white text-zinc-200 min-h-screen flex flex-col">
+
+<!-- HEADER -->
+<header class="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
+    <div class="max-w-screen-2xl mx-auto px-6 h-[72px] flex items-center justify-between">
+
+        <!-- Logo -->
+        <div class="flex items-center gap-4">
+            <div class="w-9 h-9 bg-blue-600 rounded-2xl flex items-center justify-center">
+                <div class="flex gap-px">
+                    <div class="w-1 h-5 bg-white rounded"></div>
+                    <div class="w-1 h-3 bg-white rounded"></div>
+                    <div class="w-1 h-4 bg-white rounded"></div>
+                </div>
+            </div>
+            <div>
+                <div class="title-font text-xl font-semibold text-white">ATM EJ Parser</div>
+                <div class="text-[10px] text-zinc-500 font-mono -mt-1">
+                    ELECTRONIC JOURNAL ANALYSIS SYSTEM
+                </div>
+            </div>
+        </div>
+
+        <!-- NAV -->
+        {% block navigation %}
+        <nav class="flex bg-zinc-900 rounded-full p-1">
+            <a href="{% url 'dashboard_home' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'dashboard' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+                Dashboard
+            </a>
+            <a href="{% url 'transaction_list' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'table' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+                Table
+            </a>
+            <a href="{% url 'error_list' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'errors' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+                Errors
+            </a>
+            <a href="{% url 'reconciliation_report' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'reconciliation' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+                Reconciliation
+            </a>
+            <a href="{% url 'cash_audit' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'cash_audit' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+                Cash Audit
+            </a>
+        </nav>
+        {% endblock %}
+
+        <div>
+            
+        </div>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="flex-1">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-zinc-900 text-center text-xs text-zinc-600 py-6">
+    ATM EJ Parser • Django + MongoDB • Regex-based EJ Analysis
+</footer>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>
