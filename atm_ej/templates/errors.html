@@ -10,14 +10,18 @@
                 <h2 class="text-xl font-semibold text-white">Error List</h2>
                 <div class="text-zinc-500 text-sm">All error transactions in detail</div>
             </div>
-            <div class="text-xs text-emerald-400">0 errors detected</div>
+            <div class="text-emerald-400 text-sm font-medium">
+                {{ error_count }} errors detected
+            </div>
+
         </div>
 
         <div class="border border-zinc-800 rounded-2xl overflow-hidden">
             <table class="w-full">
                 <thead>
                     <tr class="bg-zinc-950 border-b border-zinc-800">
-                        <th class="px-8 py-5 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Date/Time</th>
+                        <th class="px-8 py-5 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Date</th>
+                         <th class="px-8 py-5 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Time</th>
                         <th class="px-8 py-5 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Type</th>
                         <th class="px-8 py-5 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">ATM ID</th>
                         <th class="px-8 py-5 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Amount (₹)</th>
@@ -26,14 +30,51 @@
                     </tr>
                 </thead>
                 <tbody>
+                {% if errors %}
+                    {% for err in errors %}
+                    <tr class="border-b border-zinc-800 hover:bg-zinc-900 transition">
+
+                        <td class="px-8 py-5 text-sm text-zinc-200">
+                            {{ err.date }}
+                        </td>
+
+                        <td class="px-8 py-5 text-sm text-zinc-200">
+                            {{ err.time }}
+                        </td>
+
+                        <td class="px-8 py-5 text-sm text-zinc-200">
+                            {{ err.txn_type|default:"UNKNOWN" }}
+                        </td>
+
+                        <td class="px-8 py-5 text-sm text-zinc-200">
+                            {{ err.terminal_id|default:"UNKNOWN" }}
+                        </td>
+
+                        <td class="px-8 py-5 text-sm text-zinc-200">
+                            ₹{{ err.amount|default:"0" }}
+                        </td>
+
+                        <td class="px-8 py-5 text-sm text-red-400 font-semibold">
+                            {{ err.error_code|default:"N/A" }}
+                        </td>
+
+                        <td class="px-8 py-5 text-sm text-zinc-300">
+                            {{ err.error_reason|default:"Transaction Failed" }}
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                {% else %}
                     <tr>
-                        <td colspan="6" class="py-20">
-                            <div class="text-center">
-                                <div class="text-zinc-500">No errors detected</div>
+                        <td colspan="7" class="py-20">
+                            <div class="text-center text-zinc-500">
+                                No errors detected
                             </div>
                         </td>
                     </tr>
+                {% endif %}
                 </tbody>
+
             </table>
         </div>
     </div>

@@ -1,33 +1,53 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
+
+
 {% block title %}Dashboard - ATM EJ Parser{% endblock %}
 
 {% block content %}
 <div class="max-w-screen-2xl mx-auto px-8 py-10">
-    <div class="mb-8">
-        <h2 class="text-2xl font-semibold title-font tracking-tight text-white">Dashboard Overview</h2>
+    <div class="mb-8 flex items-center justify-between">
+        
+        <h2 class="text-2xl font-semibold title-font tracking-tight text-black">Dashboard Overview</h2>
         <p class="text-zinc-500">Summary of latest EJ file analysis</p>
+        
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
             <div class="text-sm text-zinc-400">Total Transactions</div>
-            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-white">142</div>
+            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-white">
+                {{ total_txns }}
+            </div>
             <div class="text-emerald-400 text-sm mt-2 flex items-center gap-1">↑ 12% from last upload</div>
         </div>
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
             <div class="text-sm text-zinc-400">Success Rate</div>
-            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-white">94%</div>
-            <div class="text-emerald-400 text-sm mt-2">132 successful</div>
+            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-white">
+            {{ success_rate }}%
+        </div>
+        <div class="text-emerald-400 text-sm mt-2">
+            {{ success_txns }} successful
+        </div>
+
         </div>
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
             <div class="text-sm text-zinc-400">Failed Transactions</div>
-            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-rose-400">8</div>
-            <div class="text-rose-400 text-sm mt-2">5.6% error rate</div>
+            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-rose-400">
+                {{ failed_txns }}
+            </div>
+            <div class="text-rose-400 text-sm mt-2">
+                {{ error_rate }}% error rate
+            </div>
+
         </div>
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
             <div class="text-sm text-zinc-400">Total Cash Dispensed</div>
-            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-white">₹2,84,500</div>
+
+            <div class="text-6xl font-semibold title-font tracking-tighter mt-4 text-white">
+                ₹{{ total_cash|intcomma }}
+            </div>
         </div>
     </div>
 </div>

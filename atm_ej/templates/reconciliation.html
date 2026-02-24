@@ -5,32 +5,68 @@
 {% block content %}
 <div class="max-w-screen-2xl mx-auto px-8 py-10">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- LEFT SIDE -->
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
             <h3 class="font-semibold text-lg mb-2">Detailed Reconciliation Report</h3>
-            <div class="text-zinc-500 text-sm">Transaction-by-transaction reconciliation status</div>
+            <div class="text-zinc-500 text-sm">
+                Transaction-by-transaction reconciliation status
+            </div>
 
             <div class="mt-8 border border-zinc-800 rounded-2xl p-6">
                 <div class="text-sm text-zinc-400">Reconciliation Status</div>
-                <div class="text-emerald-400 mt-1 font-medium">All transactions matched successfully</div>
+
+                {% if audit_status == "BALANCED" %}
+                    <div class="text-emerald-400 mt-1 font-medium">
+                        ✅ All transactions matched successfully
+                    </div>
+                {% else %}
+                    <div class="text-rose-400 mt-1 font-medium">
+                        ❌ Mismatch detected in transactions
+                    </div>
+                {% endif %}
             </div>
         </div>
 
+        <!-- RIGHT SIDE -->
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
             <h3 class="font-semibold text-lg mb-2">Reconciliation Notes</h3>
+
             <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 mt-4">
-                <div class="text-emerald-400 font-medium">0 transactions successfully matched</div>
+                <div class="text-emerald-400 font-medium">
+                    {{ total_requested|floatformat:0 }} total requested
+                </div>
+                <div class="text-zinc-400 mt-2">
+                    {{ total_dispensed|floatformat:0 }} total dispensed
+                </div>
+                <div class="text-rose-400 mt-2">
+                    {{ total_failed_amount|floatformat:0 }} failed amount
+                </div>
+                <div class="text-yellow-400 mt-2">
+                    {{ phantom_risk|floatformat:0 }} phantom risk
+                </div>
             </div>
 
             <div class="mt-8">
-                <div class="uppercase text-xs font-mono text-zinc-500 mb-3">NEXT STEPS</div>
-                <ul class="space-y-3 text-sm text-zinc-400">
-                    <li>• Review unreconciled transactions</li>
-                    <li>• Investigate error transactions</li>
-                    <li>• Verify amount variances</li>
-                    <li>• Complete final reconciliation</li>
-                </ul>
+                <div class="uppercase text-xs font-mono text-zinc-500 mb-3">
+                    NEXT STEPS
+                </div>
+
+                {% if mismatches %}
+                    <ul class="space-y-3 text-sm text-rose-400">
+                        <li>• {{ mismatches|length }} mismatched transactions found</li>
+                        <li>• Review failed transactions</li>
+                        <li>• Investigate amount discrepancies</li>
+                    </ul>
+                {% else %}
+                    <ul class="space-y-3 text-sm text-emerald-400">
+                        <li>• No mismatches detected</li>
+                        <li>• Reconciliation complete</li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
-    </div>
+
+    </div>    
 </div>
 {% endblock %}

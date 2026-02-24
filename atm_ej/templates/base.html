@@ -58,15 +58,19 @@
             <a href="{% url 'reconciliation_report' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'reconciliation' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
                 Reconciliation
             </a>
-            <a href="{% url 'cash_audit' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'cash_audit' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+            <!-- <a href="{% url 'cash_audit' %}" class="px-6 py-2 rounded-full text-sm {% if active_tab == 'cash_audit' %}bg-white text-zinc-950{% else %}text-zinc-400 hover:text-white{% endif %}">
                 Cash Audit
-            </a>
+            </a> -->
         </nav>
-        {% endblock %}
 
         <div>
-            
+            <a href="{% url 'upload_page' %}">
+                <button class="btn btn-primary">Upload EJ File</button>
+            </a>
         </div>
+
+        {% endblock %}
+        
     </div>
 </header>
 
