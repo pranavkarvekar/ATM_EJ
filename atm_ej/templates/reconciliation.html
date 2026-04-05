@@ -3,70 +3,164 @@
 {% block title %}Reconciliation - ATM EJ Parser{% endblock %}
 
 {% block content %}
-<div class="max-w-screen-2xl mx-auto px-8 py-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="max-w-screen-2xl mx-auto px-8 py-10 animate-fade-in">
 
-        <!-- LEFT SIDE -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
-            <h3 class="font-semibold text-lg mb-2">Detailed Reconciliation Report</h3>
-            <div class="text-zinc-500 text-sm">
-                Transaction-by-transaction reconciliation status
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold font-display tracking-tight text-slate-900">Reconciliation Report</h2>
+        <p class="text-slate-500 mt-1">Transaction-by-transaction reconciliation status</p>
+    </div>
+
+    <!-- Status Banner -->
+    {% if audit_status == "BALANCED" %}
+    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-8 flex items-center gap-4">
+        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-6 h-6 text-emerald-600"></i>
+        </div>
+        <div>
+            <div class="text-emerald-800 font-bold text-lg">All Balanced</div>
+            <div class="text-emerald-600 text-sm">All transactions matched successfully — no discrepancies found</div>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-rose-50 border border-rose-200 rounded-2xl p-6 mb-8 flex items-center gap-4">
+        <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center animate-pulse-soft">
+            <i data-lucide="shield-alert" class="w-6 h-6 text-rose-600"></i>
+        </div>
+        <div>
+            <div class="text-rose-800 font-bold text-lg">Mismatch Detected</div>
+            <div class="text-rose-600 text-sm">Discrepancies found in transactions — review required</div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center">
+                    <i data-lucide="arrow-up-circle" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <div class="text-sm font-medium text-slate-500">Total Requested</div>
+            </div>
+            <div class="text-3xl font-bold font-display text-slate-900">
+                ₹{{ total_requested|floatformat:0 }}
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center">
+                    <i data-lucide="arrow-down-circle" class="w-5 h-5 text-emerald-600"></i>
+                </div>
+                <div class="text-sm font-medium text-slate-500">Total Dispensed</div>
+            </div>
+            <div class="text-3xl font-bold font-display text-emerald-700">
+                ₹{{ total_dispensed|floatformat:0 }}
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 bg-rose-50 rounded-lg flex items-center justify-center">
+                    <i data-lucide="x-circle" class="w-5 h-5 text-rose-500"></i>
+                </div>
+                <div class="text-sm font-medium text-slate-500">Failed Amount</div>
+            </div>
+            <div class="text-3xl font-bold font-display text-rose-600">
+                ₹{{ total_failed_amount|floatformat:0 }}
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 bg-amber-50 rounded-lg flex items-center justify-center">
+                    <i data-lucide="ghost" class="w-5 h-5 text-amber-600"></i>
+                </div>
+                <div class="text-sm font-medium text-slate-500">Phantom Risk</div>
+            </div>
+            <div
+                class="text-3xl font-bold font-display {% if phantom_risk == 0 %}text-emerald-700{% else %}text-amber-600{% endif %}">
+                ₹{{ phantom_risk|floatformat:0 }}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Details Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Left: Detailed Status -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
+            <div class="flex items-center gap-2 mb-5">
+                <i data-lucide="clipboard-list" class="w-5 h-5 text-slate-400"></i>
+                <h3 class="font-bold text-lg text-slate-900">Reconciliation Details</h3>
             </div>
 
-            <div class="mt-8 border border-zinc-800 rounded-2xl p-6">
-                <div class="text-sm text-zinc-400">Reconciliation Status</div>
+            <div class="bg-slate-50 border border-slate-100 rounded-xl p-5">
+                <div class="text-sm text-slate-500 mb-2">Reconciliation Status</div>
 
                 {% if audit_status == "BALANCED" %}
-                    <div class="text-emerald-400 mt-1 font-medium">
-                        ✅ All transactions matched successfully
-                    </div>
+                <div class="flex items-center gap-2 text-emerald-700 font-semibold">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    All transactions matched successfully
+                </div>
                 {% else %}
-                    <div class="text-rose-400 mt-1 font-medium">
-                        ❌ Mismatch detected in transactions
-                    </div>
+                <div class="flex items-center gap-2 text-rose-600 font-semibold">
+                    <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                    Mismatch detected in transactions
+                </div>
                 {% endif %}
             </div>
         </div>
 
-        <!-- RIGHT SIDE -->
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
-            <h3 class="font-semibold text-lg mb-2">Reconciliation Notes</h3>
-
-            <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 mt-4">
-                <div class="text-emerald-400 font-medium">
-                    {{ total_requested|floatformat:0 }} total requested
-                </div>
-                <div class="text-zinc-400 mt-2">
-                    {{ total_dispensed|floatformat:0 }} total dispensed
-                </div>
-                <div class="text-rose-400 mt-2">
-                    {{ total_failed_amount|floatformat:0 }} failed amount
-                </div>
-                <div class="text-yellow-400 mt-2">
-                    {{ phantom_risk|floatformat:0 }} phantom risk
-                </div>
+        <!-- Right: Next Steps -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
+            <div class="flex items-center gap-2 mb-5">
+                <i data-lucide="list-todo" class="w-5 h-5 text-slate-400"></i>
+                <h3 class="font-bold text-lg text-slate-900">Next Steps</h3>
             </div>
 
-            <div class="mt-8">
-                <div class="uppercase text-xs font-mono text-zinc-500 mb-3">
-                    NEXT STEPS
+            {% if mismatches %}
+            <div class="space-y-3">
+                <div class="flex items-start gap-3 p-3 bg-rose-50 rounded-xl border border-rose-100">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-500 mt-0.5 shrink-0"></i>
+                    <div>
+                        <div class="text-sm font-semibold text-rose-800">{{ mismatches|length }} mismatched transactions
+                            found</div>
+                        <div class="text-xs text-rose-600 mt-0.5">Requires immediate attention</div>
+                    </div>
                 </div>
-
-                {% if mismatches %}
-                    <ul class="space-y-3 text-sm text-rose-400">
-                        <li>• {{ mismatches|length }} mismatched transactions found</li>
-                        <li>• Review failed transactions</li>
-                        <li>• Investigate amount discrepancies</li>
-                    </ul>
-                {% else %}
-                    <ul class="space-y-3 text-sm text-emerald-400">
-                        <li>• No mismatches detected</li>
-                        <li>• Reconciliation complete</li>
-                    </ul>
-                {% endif %}
+                <div class="flex items-start gap-3 p-3 bg-amber-50 rounded-xl border border-amber-100">
+                    <i data-lucide="search" class="w-5 h-5 text-amber-600 mt-0.5 shrink-0"></i>
+                    <div>
+                        <div class="text-sm font-semibold text-amber-800">Review failed transactions</div>
+                        <div class="text-xs text-amber-600 mt-0.5">Cross-check with switch data</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                    <i data-lucide="banknote" class="w-5 h-5 text-blue-600 mt-0.5 shrink-0"></i>
+                    <div>
+                        <div class="text-sm font-semibold text-blue-800">Investigate amount discrepancies</div>
+                        <div class="text-xs text-blue-600 mt-0.5">Verify dispensed vs requested amounts</div>
+                    </div>
+                </div>
             </div>
+            {% else %}
+            <div class="space-y-3">
+                <div class="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                    <i data-lucide="check" class="w-5 h-5 text-emerald-600 mt-0.5 shrink-0"></i>
+                    <div class="text-sm font-semibold text-emerald-800">No mismatches detected</div>
+                </div>
+                <div class="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                    <i data-lucide="check" class="w-5 h-5 text-emerald-600 mt-0.5 shrink-0"></i>
+                    <div class="text-sm font-semibold text-emerald-800">Reconciliation complete</div>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
-    </div>    
+    </div>
 </div>
 {% endblock %}

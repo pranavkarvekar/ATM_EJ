@@ -6,7 +6,7 @@ from .regex_patterns import (
     TXN_TYPE_RE,
     AMT_REQ_RE,
     AMOUNT_RE,
-    AMT_DISP_RE,          # ✅ ADD
+    AMT_DISP_RE,          
     ERROR_CODE_RE,
     ERROR_REASON_RE,
     SWITCH_TIMEOUT_RE,
@@ -27,12 +27,12 @@ def build_transaction(txn_block: str, atm_id: str = None) -> dict:
         "terminal_id": "ATM-UNKNOWN",
         "txn_code": None,
         "txn_type": None,
-        "amount": None,              # requested
-        "dispensed_amount": 0.0,     # ✅ ADDED
+        "amount": None,              
+        "dispensed_amount": 0.0,     
         "status": None,
         "error_code": None,
         "error_reason": None,
-        "is_timeout": False,         # ✅ ADDED
+        "is_timeout": False,         
         "raw": txn_block
     }
 
@@ -111,7 +111,7 @@ def build_transaction(txn_block: str, atm_id: str = None) -> dict:
         if SWITCH_TIMEOUT_RE.search(line):
             txn["error_code"] = "TIMEOUT"
             txn["error_reason"] = "SWITCH RESPONSE TIMEOUT"
-            txn["is_timeout"] = True        # ✅ ADD
+            txn["is_timeout"] = True        
             break
 
     # # --- CASH DISPENSED AMOUNT ---

@@ -41,7 +41,8 @@ def dashboard_home(request):
         "failed_txns": failed_txns,
         "success_rate": success_rate,
         "error_rate": error_rate,
-        "total_cash": int(total_cash)
+        "total_cash": int(total_cash),
+        "active_tab": "dashboard",
     })
 
 def transaction_list(request):
@@ -127,6 +128,7 @@ def transaction_list(request):
         "status_filter": status_filter,
         "total_count": txn_collection.count_documents({}),
         "filtered_count": len(transactions),
+        "active_tab": "table",
     })
 
 
@@ -175,7 +177,8 @@ def error_list(request):
 
     return render(request, 'errors.html', {
         "errors": errors,
-        "error_count": len(errors)
+        "error_count": len(errors),
+        "active_tab": "errors",
     })
 
 
@@ -188,6 +191,7 @@ def reconciliation_report(request):
     transactions = list(txn_collection.find({}))
 
     result = reconcile_transactions(transactions)
+    result["active_tab"] = "reconciliation"
 
     return render(request, "reconciliation.html", result)
 
